@@ -40,8 +40,8 @@ class MatchScore extends Component{
     left_team_name = left_team_name[left_team_name.length - 1];
     let right_team_name =  right_team.name.split(" ");
     right_team_name = right_team_name[right_team_name.length - 1];
-    let left_image = "images/" + left_team.name.replace(/ /g,"_") + ".svg"
-    let right_image = "images/" + right_team.name.replace(/ /g,"_") + ".svg"
+    let left_image = "/images/" + left_team.name.replace(/ /g,"_") + ".svg"
+    let right_image = "/images/" + right_team.name.replace(/ /g,"_") + ".svg"
     let left_css = "score-text"
     let right_css = "score-text"
     if (games_won[0] > games_won[1]){
@@ -60,7 +60,7 @@ class MatchScore extends Component{
         
     }
     return(
-      <Grid>
+      <Grid className={"round-tabs"}>
         <Grid.Row>
           <Grid.Column width={16}>
             <div class={"score-text"}>
@@ -139,6 +139,7 @@ class MatchScore extends Component{
 
           <Grid.Column width = {(16 - table_width)/2}/>
         </Grid.Row>
+        <Grid.Row />
       </Grid>
 
     );

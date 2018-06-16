@@ -10,9 +10,9 @@ import Compare from './Compare.js'
 class RoundScore extends Component{
   render(){
     let teams = this.props.teams
-    let game_length = this.props.map.game_length
+    let match_time = this.props.map.match_time
     let map_length = new Date(null);
-    map_length.setSeconds(game_length * 4);
+    map_length.setSeconds(match_time);
     map_length = map_length.toISOString().substr(11, 8);
     let map_type = this.props.map_type
     let left_team = teams[0]
@@ -21,8 +21,8 @@ class RoundScore extends Component{
     left_team_name = left_team_name[left_team_name.length - 1];
     let right_team_name =  right_team.name.split(" ");
     right_team_name = right_team_name[right_team_name.length - 1];
-    let left_image = "images/" + left_team.name.replace(/ /g,"_") + ".svg"
-    let right_image = "images/" + right_team.name.replace(/ /g,"_") + ".svg"
+    let left_image = "/images/" + left_team.name.replace(/ /g,"_") + ".svg"
+    let right_image = "/images/" + right_team.name.replace(/ /g,"_") + ".svg"
     let left_css = "score-text"
     let right_css = "score-text"
     if (left_team.score > right_team.score){
@@ -32,7 +32,7 @@ class RoundScore extends Component{
       right_css = "score-text bold"
     }
     return(
-      <Grid>
+      <Grid padded>
         <Grid.Row>
           <Grid.Column>
             <div className = {"score-text"} >
@@ -70,6 +70,7 @@ class RoundScore extends Component{
             <img src={right_image} className={"score_image"}/>
           </Grid.Column>
         </Grid.Row>
+        <Grid.Row />
       </Grid>
 
     );

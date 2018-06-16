@@ -40,6 +40,10 @@ class LineGraph extends Component {
         let player_graph_info = {name: player, data: []}
 
         let player_graph_by_minute_info = {name: player, data: []}
+        let first_date_seconds = 0
+        for(let key in player_data.data[0]['date']){
+          first_date_seconds = player_data.data[0]['date'][key]
+        }
         for(let i = 0; i < game_length; i++){
           let number = player_data.data[i][current_stat]
 
@@ -53,7 +57,13 @@ class LineGraph extends Component {
             team_stats[team][i] += number
           }
           if(first){
-            dates.push(i*4000)
+            let current_date = player_data.data[i]['date']
+            var timestamp = current_date
+            for (let key in current_date){
+              console.log(key)
+              dates.push(current_date[key] - first_date_seconds)
+              console.log(current_date[key])
+            }
           }
 
           player_graph_info.data.push(number)
@@ -110,7 +120,7 @@ class LineGraph extends Component {
           labels: {
             formatter: function() {
               return Highcharts.dateFormat('%H:%M:%S', this.value);
-            }
+            },
           },
           tickInterval: game_length/10,
           categories: dates
@@ -213,7 +223,6 @@ class LineGraph extends Component {
             </Dropdown.Menu>
           </Dropdown>
           <Chart config={team_options} />
-          <Chart config={team_options_by_minute} />
           <Chart config={options} />
         </div>
       );

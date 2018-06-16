@@ -17,7 +17,7 @@ class Compare extends Component {
   render() {
     let players = this.props.players
     let teams = this.props.teams
-    let stats  = ['Hero Damage Done', 'Healing Done',  'Final Blows', 'Deaths', 'Defensive Assists', 'Offensive Assists', 'Eliminations',  'Objective Kills','Assists', 'Solo Kills']
+    let stats  = ['Hero Damage Done', 'Healing Done',  'Final Blows', 'Deaths', 'Offensive Assists', 'Eliminations', 'Assists', 'Solo Kills', 'Weapon Accuracy','Defensive Assists', 'Objective Kills']
     let stat_type = this.props.stat_type
     let left = this.props.left
     let right = this.props.right
@@ -80,11 +80,14 @@ class Compare extends Component {
       let player_heroes = _.sortBy(_.keys(player["hero_pick"]), function(hero){ return player["hero_pick"][hero]})
       let total_time = 0
       for(let hero of player_heroes.reverse()){
+        if (hero == ""){
+          continue
+        }
         let date = new Date(null);
-        date.setSeconds(4*player["hero_pick"][hero]);
-        total_time += 4 * player["hero_pick"][hero]
+        date.setSeconds(player["hero_pick"][hero]);
+        total_time += player["hero_pick"][hero]
         let hero_time = date.toISOString().substr(11, 8);
-        let hero_path = "images/" + hero.replace(".","") + ".png"
+        let hero_path = "/images/" + hero.replace(".","") + ".png"
         let hero_entry = <Popup
           key={hero_path}
           trigger={<img src={hero_path} className={hero_css}/>}
@@ -107,15 +110,15 @@ class Compare extends Component {
     let player_1_path, player_2_path, player_1_team, player_2_team
 
     if(this.props.compare == "players"){
-      player_1_path = "images/" + players[left].team.replace(/ /g,"_")  + ".svg"
-      player_2_path = "images/" + players[right].team.replace(/ /g,"_")  + ".svg"
+      player_1_path = "/images/" + players[left].team.replace(/ /g,"_")  + ".svg"
+      player_2_path = "/images/" + players[right].team.replace(/ /g,"_")  + ".svg"
       player_1_team = <img src={player_1_path} className={"scoreboard_image"}/>
       player_2_team = <img src={player_2_path} className={"scoreboard_image"}/>
     }
 
     else{
-      player_1_path = "images/" + left.replace(/ /g, "_") + ".svg"
-      player_2_path = "images/" + right.replace(/ /g,"_")  + ".svg"
+      player_1_path = "/images/" + left.replace(/ /g, "_") + ".svg"
+      player_2_path = "/images/" + right.replace(/ /g,"_")  + ".svg"
       player_1_team = <img src={player_1_path} className={"scoreboard_image"}/>
       player_2_team = <img src={player_2_path} className={"scoreboard_image"}/>
       var n = left.split(" ");  
@@ -207,13 +210,13 @@ class Compare extends Component {
               if(stat in shortening){
                 stat = shortening[stat]
               }
-              if(stat_type == "per min"){
+              if(stat_type == "per min" && stat != "Weapon Accuracy"){
                 player_1_data = Math.round(10 * player_1_data/player_minutes[0])/10
 
                 player_2_data = Math.round(10 * player_2_data/player_minutes[1])/10
                 extra = "/min"
               }
-              if(stat_type == "per 10 min"){
+              if(stat_type == "per 10 min" && stat != "Weapon Accuracy"){
                 player_1_data = Math.round(100 * player_1_data/player_minutes[0])/10
 
                 player_2_data = Math.round(100 * player_2_data/player_minutes[1])/10

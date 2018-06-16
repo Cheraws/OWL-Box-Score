@@ -25,13 +25,12 @@ class Scoreboard extends Component {
   }
 
    AssignPlayers(players,team_to_player) {
-    let game_length;
     let teams = []
     for(let team of team_to_player){
       teams[team.name] = []
     }
     for (let player in players){
-      game_length = players[player].game_length
+      const game_length = players[player].game_length
       let team = players[player].team
       let player_info = players[player].data[game_length-1]
       let player_scoreboard = {}
@@ -94,7 +93,6 @@ class Scoreboard extends Component {
     if(teams == null){
       teams = this.AssignPlayers(this.props.players,this.props.teams)
     }
-    let game_length = this.state.game_length
     let direction = this.state.direction
     let column = this.state.column
     let team_stats = {}
@@ -122,7 +120,7 @@ class Scoreboard extends Component {
       {Object.keys(teams).map(function(team,i){
         var n = team.split(" ");
         var team_name = n[n.length - 1];
-        var picture_path = "images/" + team.replace(/ /g,"_") + ".svg"
+        var picture_path = "/images/" + team.replace(/ /g,"_") + ".svg"
         return(
         <Grid.Column width = {columnWidth}>
         <Table unstackable sortable striped selectable>
@@ -159,7 +157,7 @@ class Scoreboard extends Component {
             let player_info = player
             let hero_pool = player_info["hero_pick"]
             var hero = _.maxBy(_.keys(hero_pool), function (o) { return hero_pool[o]; });
-            let hero_path = "images/" + hero.replace(".","") + ".png"
+            let hero_path = "/images/" + hero.replace(".","") + ".png"
             return(
               <Table.Row className={cell_css}>
                 <Table.Cell>
