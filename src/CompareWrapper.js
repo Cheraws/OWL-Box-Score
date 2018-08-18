@@ -37,7 +37,18 @@ class CompareWrapper extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
-    return {left: null, right:null, compare: "players"}
+    let compared = []
+
+    let teams = nextProps.teams
+    for(let team in teams){
+      for(let key in teams[team]['players']){
+        compared.push(key)
+      }
+    }
+    if(!compared.includes(prevState.left) || !compared.includes(prevState.right)){
+      return {left: null, right:null, compare: "players"}
+    }
+    return prevState
   }
 
 
@@ -45,31 +56,29 @@ class CompareWrapper extends Component {
     let left_dropdown = []
     let right_dropdown = []
     teams = {}
-    let players = this.props.players
+    let teams = this.props.teams
     let left = this.state.left
     let right= this.state.right
-    let teams = {}
-    for(let player in this.props.players){
-      let team = players[player].team
-      if(!(team in teams)){
-        teams[team] = []
-      }   
-      teams[team].push(player)
-    }
+
+
     let compared = []
     for(let team in teams){
-      compared.push(teams[team][0])
+      for(let key in teams[team]['players']){
+        compared.push(key)
+        break
+      }
     }
     if(this.state.left == null){
       left = compared[0]
       right = compared[1]
     }
-
+    console.log(teams)
+    console.log(left)
+    console.log(right)
     for(let team in teams){
       let team_indicator = <Dropdown.Item><div className="Dropdown-team-name">{team}</div></Dropdown.Item>
       left_dropdown.push(team_indicator)
-      for(let i = 0; i < teams[team].length; i++){
-        let player = teams[team][i]
+      for(let player in teams[team]['players']){
         let match_button = <Dropdown.Item 
             onClick={()=> this.onChange(player, right)}
           >
@@ -82,8 +91,7 @@ class CompareWrapper extends Component {
     for(let team in teams){
       let team_indicator = <Dropdown.Item><div className="Dropdown-team-name">{team}</div></Dropdown.Item>
       right_dropdown.push(team_indicator)
-      for(let i = 0; i < teams[team].length; i++){
-        let player = teams[team][i]
+      for(let player in teams[team]['players']){
         let match_button = <Dropdown.Item 
             onClick={()=> this.onChange(left, player)}
           >
@@ -92,6 +100,7 @@ class CompareWrapper extends Component {
         right_dropdown.push(match_button)
       }
     }
+
     let dropdown_width = 8
     let right_dropdown_css="right-dropdown"
     if(this.props.mobile == true){

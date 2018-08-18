@@ -10,25 +10,24 @@ import Compare from './Compare.js'
 class RoundScore extends Component{
   render(){
     let teams = this.props.teams
-    let match_time = this.props.map.match_time
+    let team_names =this.props.team_names
+    let match_time = 0
     let map_length = new Date(null);
     map_length.setSeconds(match_time);
     map_length = map_length.toISOString().substr(11, 8);
-    let map_type = this.props.map_type
-    let left_team = teams[0]
-    let right_team = teams[1]
-    let left_team_name =  left_team.name.split(" ");
-    left_team_name = left_team_name[left_team_name.length - 1];
-    let right_team_name =  right_team.name.split(" ");
-    right_team_name = right_team_name[right_team_name.length - 1];
-    let left_image = "/images/" + left_team.name.replace(/ /g,"_") + ".svg"
-    let right_image = "/images/" + right_team.name.replace(/ /g,"_") + ".svg"
+    let map_name = this.props.map_name
+    map_name = map_name.replace("-", " ")
+    map_name = map_name.replace(/\b\w/g, function(l){ return l.toUpperCase() })
+    let left_team = team_names[0]
+    let right_team = team_names[1]
+    let left_image = "/images/" + left_team.replace(/ /g,"_") + ".svg"
+    let right_image = "/images/" + right_team.replace(/ /g,"_") + ".svg"
     let left_css = "score-text"
     let right_css = "score-text"
-    if (left_team.score > right_team.score){
+    if (teams[left_team].score > teams[right_team].score){
       left_css = "score-text bold"
     }
-    if(left_team.score < right_team.score){
+    if(teams[left_team].score < teams[right_team].score){
       right_css = "score-text bold"
     }
     return(
@@ -36,7 +35,7 @@ class RoundScore extends Component{
         <Grid.Row>
           <Grid.Column>
             <div className = {"score-text"} >
-              {map_type}
+              {map_name}
             </div>
           </Grid.Column>
         </Grid.Row>
@@ -53,7 +52,7 @@ class RoundScore extends Component{
           </Grid.Column>
           <Grid.Column width={3}>
               <div className = {left_css}>
-                {left_team.score}
+                {teams[left_team].score}
               </div>
           </Grid.Column>
           <Grid.Column width={2} verticalAlign='center'>
@@ -63,7 +62,7 @@ class RoundScore extends Component{
           </Grid.Column>
           <Grid.Column width={3}  >
               <div className = {right_css}>
-                {right_team.score}
+                {teams[right_team].score}
               </div>
           </Grid.Column>
           <Grid.Column width={4}>

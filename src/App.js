@@ -8,22 +8,6 @@ import {Header, Table,Button, Rating,Loader,Grid,Menu,Container,Image,List,Icon,
 
 
 
-let menu = (
-  <div className= "App-header">
-    <Menu fixed="top" inverted>
-      <Menu.Item>OWL Stats</Menu.Item>
-      <Menu.Item>
-        <Dropdown text = "Matches">
-          <Dropdown.Menu>
-              <Link to={'/matches/36'} activeClassName="active">Link</Link>
-            <Dropdown.Item>Link </Dropdown.Item>
-          </Dropdown.Menu>
-      </Dropdown>
-      </Menu.Item>
-    </Menu>
-  </div>
-)
-
 class App extends Component {
   
   render(){
