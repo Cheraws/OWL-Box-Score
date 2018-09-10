@@ -316,6 +316,7 @@ class Scoreboard extends Component {
             <List.Item>DMG: Hero Damage</List.Item>
             <List.Item>Heals: Healing Done</List.Item>
           </List>
+      <Grid.Row />
       </Grid>
 
     );

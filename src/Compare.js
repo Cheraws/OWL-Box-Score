@@ -256,7 +256,7 @@ class Compare extends Component {
     player_2 = filtered_players[1][this.state.right_hero]
 
     //check for mobile compatibility
-    let columnWidth = 16
+    let columnWidth = 14
     let header_css = "Compare-header"
     let cell_css = "Compare-text"
     let hero_css = "compare-hero-image"

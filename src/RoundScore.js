@@ -11,7 +11,29 @@ class RoundScore extends Component{
   render(){
     let teams = this.props.teams
     let team_names =this.props.team_names
+
     let match_time = 0
+    //calculate match time.
+    for (let team of team_names){
+      let team_data = teams
+      let player_team_data = []
+      let player_entry = {}
+      for (let player in team_data[team]['players']){
+        let player_entry = {}
+        let player_data = team_data[team]['players'][player]
+        for (let hero in player_data){
+          for (let key in player_data[hero]){
+            let value = player_data[hero][key]
+
+            if(key == "time_played"){
+              match_time += value
+            }
+          }
+
+        }
+      }
+    }
+    match_time = match_time/12
     let map_length = new Date(null);
     map_length.setSeconds(match_time);
     map_length = map_length.toISOString().substr(11, 8);

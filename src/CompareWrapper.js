@@ -72,9 +72,6 @@ class CompareWrapper extends Component {
       left = compared[0]
       right = compared[1]
     }
-    console.log(teams)
-    console.log(left)
-    console.log(right)
     for(let team in teams){
       let team_indicator = <Dropdown.Item><div className="Dropdown-team-name">{team}</div></Dropdown.Item>
       left_dropdown.push(team_indicator)
@@ -159,10 +156,8 @@ class CompareWrapper extends Component {
     if(this.state.compare == "teams"){
       playerSelection = ""
     }
-    return (
-      <div>
-      <Grid className="App" centered>
-        <div className="checkbox">
+    let player_team_switch =  
+      <div className="checkbox">
           <Grid.Row>
             <Checkbox toggle 
               label={"Compare " + this.state.compare}
@@ -171,6 +166,9 @@ class CompareWrapper extends Component {
             />
           </Grid.Row>
         </div>
+    return (
+      <div>
+      <Grid className="App" centered>
         {statSelection}
         {playerSelection}
       </Grid>

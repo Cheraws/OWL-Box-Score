@@ -103,7 +103,7 @@ class MatchInfo extends Component {
           total_match['teams'][team]['players'] = {}
         }
         for (let player in teams[team]['players']){
-          if (!(player in total_match['teams'][team])){
+          if (!(player in total_match['teams'][team]['players'])){
             total_match['teams'][team]['players'][player] = {}
           }
           let player_data = teams[team]['players'][player]
@@ -133,15 +133,10 @@ class MatchInfo extends Component {
     let dropdown_values = {}
     
 
-
+    //first panel
     let teams = total_match.teams
     let panes = [
       { menuItem: 'Box Score', render: () => <Tab.Pane>
-        <MatchScore
-        screenWidth={this.state.screenWidth}
-        data={this.state.data}
-        team_names={team_names}
-        mobile={this.state.mobile}/>
         <Scoreboard 
         screenWidth={this.state.screenWidth}
         teams={teams}
@@ -155,10 +150,22 @@ class MatchInfo extends Component {
         screenWidth={this.state.screenWidth}
         teams={teams}
         mobile={this.state.mobile}/>
-        </Tab.Pane> }
+        </Tab.Pane> },
+        { menuItem: 'Pick Rates', render: () => <Tab.Pane>
+          <PickRates
+          screenWidth={this.state.screenWidth}
+          teams={teams} 
+          team_names={team_names}
+          mobile={this.state.mobile}/>
+          </Tab.Pane> },
     ]
 
     let content = <div>
+          <MatchScore
+          screenWidth={this.state.screenWidth}
+          data={this.state.data}
+          team_names={team_names}
+          mobile={this.state.mobile}/>
                   <Tab panes={panes} />
                 </div> 
 
@@ -185,12 +192,7 @@ class MatchInfo extends Component {
       let teams = match[i].teams
       let panes = [
         { menuItem: 'Box Score', render: () => <Tab.Pane>
-            <RoundScore
-            screenWidth={this.state.screenWidth}
-            teams ={teams}
-            team_names={team_names}
-            map_name={match[i]["map_name"]}
-            mobile={this.state.mobile}/>
+
             <Scoreboard 
             screenWidth={this.state.screenWidth}
             teams={teams} 
@@ -199,6 +201,13 @@ class MatchInfo extends Component {
           </Tab.Pane> },
         { menuItem: 'Compare', render: () => <Tab.Pane>
           <CompareWrapper
+          screenWidth={this.state.screenWidth}
+          teams={teams} 
+          team_names={team_names}
+          mobile={this.state.mobile}/>
+          </Tab.Pane> },
+        { menuItem: 'Pick Rates', render: () => <Tab.Pane>
+          <PickRates
           screenWidth={this.state.screenWidth}
           teams={teams} 
           team_names={team_names}
@@ -215,6 +224,12 @@ class MatchInfo extends Component {
 
       dropdown_content.push(match_button)
       let content = <div>
+            <RoundScore
+            screenWidth={this.state.screenWidth}
+            teams ={teams}
+            team_names={team_names}
+            map_name={match[i]["map_name"]}
+            mobile={this.state.mobile}/>
                     <Tab panes={panes} />
                   </div> 
 
