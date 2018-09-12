@@ -17,6 +17,7 @@ class Compare extends Component {
     super(props)
     this.AssignPlayers = this.AssignPlayers.bind(this)
     this.PlayerStats = this.PlayerStats.bind(this)
+    this.createComparisonRow = this.createComparisonRow.bind(this)
     this.onChange = this.onChange.bind(this)
     this.state = {left_hero: "all", right_hero:"all"}
   }
@@ -117,9 +118,27 @@ class Compare extends Component {
   }
 
 
+  createComparisonRow(left, label, right, cell_css,stat_compare){
+      if(!(stat_compare)){
+        left = <Table.Cell> {left} </Table.Cell>
+        right = <Table.Cell> {right} </Table.Cell>
+
+      }
+      return <Table.Row className={cell_css} >
+                  {left}
+                <Table.Cell>
+                  {label}
+                </Table.Cell>
+                  {right}
+              </Table.Row>
+  }
+
+  
+
 
   //Organizes the stats based on the statline shown.
   PlayerStats(title,player_1,player_2,stat_list,stat_type,cell_css,player_minutes){
+      let createComparisonRow = this.createComparisonRow
       return(
 
         <React.Fragment>
@@ -179,15 +198,7 @@ class Compare extends Component {
                 </Table.Cell>
               }
 
-              return(
-                <Table.Row className={cell_css}>
-                    {left_data}
-                  <Table.Cell >
-                    {formatted_stat} 
-                  </Table.Cell>
-                    {right_data} 
-                </Table.Row>
-              );
+              return createComparisonRow(left_data,formatted_stat, right_data,cell_css,true)
             })}
 
         </React.Fragment>
@@ -329,63 +340,45 @@ class Compare extends Component {
     let time_played = ""
     let heroes = ""
     if(this.props.compare == "players"){
-      heroes = 
-            <Table.Row className={cell_css}>
-                <Table.Cell width={4 + team_logo_width} text={this.state.left_hero}>
-                 <Dropdown text={this.state.left_hero}>
+
+      let left_side = <Dropdown text={this.state.left_hero}>
                     <Dropdown.Menu >
                       {left_dropdown.map(function(stat,i){
                           return stat
                       })}
                     </Dropdown.Menu>
                   </Dropdown>
-                </Table.Cell>
-                <Table.Cell width={4}>
-                  Heroes
-                </Table.Cell>
-                <Table.Cell  width={4 + team_logo_width} >
-                 <Dropdown text = {this.state.right_hero}>
-                    <Dropdown.Menu  >
-                      {right_dropdown.map(function(stat,i){
+
+      let right_side = <Dropdown text={this.state.left_hero}>
+                    <Dropdown.Menu >
+                      {left_dropdown.map(function(stat,i){
                           return stat
                       })}
                     </Dropdown.Menu>
                   </Dropdown>
-                </Table.Cell>
-              </Table.Row>
+      
+      heroes = this.createComparisonRow(left_side, "Heroes", right_side, cell_css,false)
 
-      heroes_played = 
-              <Table.Row className={cell_css}>
-                <Table.Cell width={4 + team_logo_width}>
+      left_side = <Table.Cell width={4 + team_logo_width}>
                   <div className="Hero-container">
                     {hero_popups_by_player[0].map(function(hero,i){
                       return hero
                     })}
                   </div>
                 </Table.Cell>
-                <Table.Cell width={4}>
-                  Heroes Played
-                </Table.Cell>
-                <Table.Cell  width={4 + team_logo_width}>
+      
+      right_side = <Table.Cell  width={4 + team_logo_width}>
                   <div className="Hero-container">
                     {hero_popups_by_player[1].map(function(hero,i){
                       return hero
                     })}
                   </div>
                 </Table.Cell>
-              </Table.Row>
-      time_played = 
-            <Table.Row className={cell_css}>
-                <Table.Cell width={4 + team_logo_width}>
-                  {total_times[0]}
-                </Table.Cell>
-                <Table.Cell width={4}>
-                  Total Time Played
-                </Table.Cell>
-                <Table.Cell  width={4 + team_logo_width}>
-                  {total_times[1]}
-                </Table.Cell>
-              </Table.Row>
+
+      heroes_played = this.createComparisonRow(left_side, "Heroes Played", right_side, cell_css,false)
+
+      time_played = this.createComparisonRow(total_times[0], "Time Played", total_times[1], cell_css,false)
+
       }
 
       return(
