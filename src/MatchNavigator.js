@@ -18,7 +18,7 @@ class MatchNavigator extends Component {
     var that = this;
 
     firebase.auth().onAuthStateChanged(function(user) {
-      databaseRef.ref("match_info").once("value").then(function(snapshot){
+      databaseRef.ref("stages/1/match_info").once("value").then(function(snapshot){
         let val = snapshot.val()
         that.setState({ data: val ,canary: "hi"})
       })
@@ -28,8 +28,10 @@ class MatchNavigator extends Component {
   render(){
     let matches = []
     let count = 0
+    /**
     if(this.state.canary == "hi"){
       for(let match of this.state.data){
+        console.log(match)
         let match_button = <Dropdown.Item>
           <a href={'#/match/' + count}  activeClassName="active">
             <div>{match.home}</div>
@@ -40,6 +42,7 @@ class MatchNavigator extends Component {
         count += 1
       }
     }
+    **/
     let menu = (
       <div className= "App-header">
         <Menu fixed="top" >

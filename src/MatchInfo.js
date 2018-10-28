@@ -30,6 +30,7 @@ class MatchInfo extends Component {
     var that = this;
     let mobile = false;
     let number = this.props.match.params.number
+    let stage = this.props.match.params.stage
     if(window.innerWidth < 500){
        mobile = true
     }
@@ -38,7 +39,7 @@ class MatchInfo extends Component {
     }
     
     firebase.auth().onAuthStateChanged(function(user) {
-      databaseRef.ref("match_data/" + number.toString()).once("value").then(function(snapshot){
+      databaseRef.ref("stages/" + stage +  "/match_data/" + number.toString()).once("value").then(function(snapshot){
         let val = snapshot.val()
         that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, mobile:mobile, total_match: null });
       })
@@ -46,8 +47,10 @@ class MatchInfo extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log("Am here")
     var that = this
     let number = this.props.match.params.number
+    let stage = this.props.match.params.stage
     if(number == this.state.number || (number == undefined && this.state.number == 0)){
       console.log("website already loaded")
       return
@@ -58,9 +61,11 @@ class MatchInfo extends Component {
     if(this.state.canary == "hi"){
       this.setState({canary:null})
     }
-    databaseRef.ref("match_data/" + number.toString()).once("value").then(function(snapshot){
-      let val = snapshot.val()
-      that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, total_match: null});
+    firebase.auth().onAuthStateChanged(function(user) {
+      databaseRef.ref("stages/" + stage +  "/match_data/" + number.toString()).once("value").then(function(snapshot){
+        let val = snapshot.val()
+        that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, total_match: null });
+      })
     })
   }
 
@@ -71,6 +76,7 @@ class MatchInfo extends Component {
     }
     this.setState({ screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, mobile:mobile })
   }
+
   onDropdown(i) {
 
     this.setState({ currentRound: i })
@@ -87,6 +93,7 @@ class MatchInfo extends Component {
     if(this.state.canary == null){
       return <Loader active inline='centered' />
     }
+    console.log(this.state.data)
     let match = this.state.data['match']
     let team_names = this.state.data['teams']
 
@@ -95,7 +102,10 @@ class MatchInfo extends Component {
     total_match['map_name'] = "Match Score"
     total_match['teams'] = {}
 
-    for (let i = 0; i< match.length; i++){
+    for (let i = 0; i< 5; i++){
+      if(!(match[i])){
+        continue;
+      }
       let teams = match[i].teams
       for(let team of team_names){
         if (!(team in total_match['teams'])){
@@ -188,7 +198,22 @@ class MatchInfo extends Component {
     maps.push(entry)
 
 
-    for (let i = 0; i < match.length; i++){
+    for (let i = 0; i < 5; i++){
+      if(!(match[i])){
+        let entry = {menuItem: 'Round ' + (i+1), render: () =>
+            <Tab.Pane className={"round-tabs"}> 
+              <div className={"round-tabs"}>
+                <div> DNP or bugged </div>
+              </div> 
+            </Tab.Pane> }
+        continue
+      }
+      let match_button = <Dropdown.Item
+          onClick={()=> this.onDropdown("Round " + (i+1))}>
+          Round {i+1}
+
+      </Dropdown.Item>
+      dropdown_content.push(match_button)
       let teams = match[i].teams
       let panes = [
         { menuItem: 'Box Score', render: () => <Tab.Pane>
@@ -216,13 +241,6 @@ class MatchInfo extends Component {
 
       ]
 
-      let match_button = <Dropdown.Item
-          onClick={()=> this.onDropdown("Round " + (i+1))}>
-          Round {i+1}
-
-      </Dropdown.Item>
-
-      dropdown_content.push(match_button)
       let content = <div>
             <RoundScore
             screenWidth={this.state.screenWidth}

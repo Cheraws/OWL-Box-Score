@@ -18,12 +18,16 @@ class MatchScore extends Component{
     let week = Math.floor(data['week'])
     let day = Math.floor(data['day'])
     let title = "Week " + week + " Day " + day
-    for(let i = 0; i< match.length; i++){
+    for(let i = 0; i< 5; i++){
+      if(!(match[i])){
+        continue
+      }
       let teams = match[i].teams
       let map_name = match[i]['map_name']
       map_name = map_name.replace("-", " ")
       map_name = map_name.replace(/\b\w/g, function(l){ return l.toUpperCase() })
       let count = 0
+      let current_score = []
       for(let team of team_names){
         let score = teams[team]['score']
         if(typeof score == "string"){
@@ -31,11 +35,12 @@ class MatchScore extends Component{
         }
         scores[count].push(score)
         count += 1
+        current_score.push(score)
       }
-      if (scores[0][i] > scores[1][i]){
+      if (current_score[0]> current_score[1]){
         games_won[0] += 1
       }
-      if (scores[0][i] < scores[1][i]){
+      if (current_score[0] < current_score[1]){
         games_won[1] += 1
       }
       map_names.push(map_name)

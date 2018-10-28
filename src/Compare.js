@@ -349,9 +349,9 @@ class Compare extends Component {
                     </Dropdown.Menu>
                   </Dropdown>
 
-      let right_side = <Dropdown text={this.state.left_hero}>
+      let right_side = <Dropdown text={this.state.right_hero}>
                     <Dropdown.Menu >
-                      {left_dropdown.map(function(stat,i){
+                      {right_dropdown.map(function(stat,i){
                           return stat
                       })}
                     </Dropdown.Menu>
