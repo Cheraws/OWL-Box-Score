@@ -60,7 +60,6 @@ class Navigator extends Component {
 
 
   render(){
-    console.log('rerender?')
     let matches = []
     let json = {}
     let dropdown_content = []
@@ -115,7 +114,7 @@ class Navigator extends Component {
                         {match.home.team_name}
                       </Grid.Column>
                       <Grid.Column width = {4}>
-                        1
+                        {match.home.score}
                       </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -123,7 +122,7 @@ class Navigator extends Component {
                         {match.away.team_name}
                       </Grid.Column >
                       <Grid.Column width = {4}>
-                        0
+                        {match.away.score}
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>

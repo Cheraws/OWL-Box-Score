@@ -23,4 +23,6 @@ firebase.auth().onAuthStateChanged(function(user) {
   // ...
 });
 
+
 export const databaseRef = firebase.database();
+//export const databaseRef = firebase.firestore();
