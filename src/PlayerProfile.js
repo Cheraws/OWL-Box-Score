@@ -58,7 +58,7 @@ class PlayerProfile extends Component {
     firebase.auth().onAuthStateChanged(function(user) {
       databaseRef.ref("players/" + player).once("value").then(function(snapshot){
         let val = snapshot.val()
-        that.setState({ data: val ,canary: "hi", player: player})
+        that.setState({ data: val ,canary: "hi", player: player, hero: ""})
       })
     })
   }
@@ -104,8 +104,8 @@ class PlayerProfile extends Component {
         
         })
       }
-      console.log(this.state.data[current_hero])
       statline = Object.keys(this.state.data[current_hero]["per_10"])
+      total_players = this.state.data[current_hero]["total"]
       console.log(statline)
     }
       
