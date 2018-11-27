@@ -215,6 +215,7 @@ class MatchInfo extends Component {
       </Dropdown.Item>
       dropdown_content.push(match_button)
       let teams = match[i].teams
+      let vod = match[i].VOD
       let panes = [
         { menuItem: 'Box Score', render: () => <Tab.Pane>
 
@@ -240,11 +241,13 @@ class MatchInfo extends Component {
           </Tab.Pane> },
 
       ]
-
+      console.log(match[i])
+      console.log(vod)
       let content = <div>
             <RoundScore
             screenWidth={this.state.screenWidth}
             teams ={teams}
+            vod = {vod}
             team_names={team_names}
             map_name={match[i]["map_name"]}
             mobile={this.state.mobile}/>

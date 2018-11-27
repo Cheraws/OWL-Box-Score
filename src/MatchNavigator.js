@@ -46,16 +46,12 @@ class MatchNavigator extends Component {
     let menu = (
       <div className= "App-header">
         <Menu fixed="top" >
-          <Menu.Item>OWL Stats</Menu.Item>
-          <Menu.Item>
-            <Dropdown text = "Matches" scrolling>
-              <Dropdown.Menu>
-                {matches.map(function(match,i){
-                  return match
-                })};
-              </Dropdown.Menu>
-          </Dropdown>
-          </Menu.Item>
+          <Menu.Item
+            as='a'
+            href='/'
+            name='OWL Scores'
+          />
+
         </Menu>
       </div>
     )

@@ -33,6 +33,8 @@ class RoundScore extends Component{
         }
       }
     }
+    let VOD = this.props.vod
+    console.log(VOD)
     match_time = match_time/12
     let map_length = new Date(null);
     map_length.setSeconds(match_time);
@@ -92,6 +94,12 @@ class RoundScore extends Component{
           </Grid.Column>
         </Grid.Row>
         <Grid.Row />
+        <Grid.Row>
+      <iframe src={VOD + ";autoplay=false"} width = {window.innerWidth} height = {0.5 * window.innerHeight} frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" autoplay='0' autostart=''></iframe>
+      <video>
+        <source src={VOD}/>
+      </video>
+        </Grid.Row>
       </Grid>
 
     );
