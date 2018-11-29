@@ -21,7 +21,6 @@ class MatchInfo extends Component {
     super(props)
     this.onResize = this.onResize.bind(this)
     this.onDropdown = this.onDropdown.bind(this)
-    this.onMatchChange = this.onMatchChange.bind(this)
     this.state = { screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, currentRound: "Overall", currentMatch: 0}
   }
 
@@ -31,32 +30,45 @@ class MatchInfo extends Component {
     let mobile = false;
     let number = this.props.match.params.number
     let stage = this.props.match.params.stage
+    let game = this.props.match.params.game
+    let current_round = "Overall"
     if(window.innerWidth < 500){
        mobile = true
     }
     if (number == undefined){
       number = 0
     }
-    
+    if (game == undefined){
+      game = 0
+    }
+    else{
+      current_round = "Round " + game
+    }
     firebase.auth().onAuthStateChanged(function(user) {
       databaseRef.ref("stages/" + stage +  "/match_data/" + number.toString()).once("value").then(function(snapshot){
         let val = snapshot.val()
-        that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, mobile:mobile, total_match: null });
+        that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, mobile:mobile, total_match: null, game: game, currentRound: current_round });
       })
     })
   }
 
   componentDidUpdate(prevProps) {
-    console.log("Am here")
     var that = this
     let number = this.props.match.params.number
     let stage = this.props.match.params.stage
+    let game = this.props.match.params.game
+    let current_round = "Overall"
     if(number == this.state.number || (number == undefined && this.state.number == 0)){
-      console.log("website already loaded")
       return
     }
     if (number == undefined){
       number = 0
+    }
+    if (game == undefined){
+      game = 0
+    }
+    else{
+      current_round = "Round " + game
     }
     if(this.state.canary == "hi"){
       this.setState({canary:null})
@@ -64,7 +76,7 @@ class MatchInfo extends Component {
     firebase.auth().onAuthStateChanged(function(user) {
       databaseRef.ref("stages/" + stage +  "/match_data/" + number.toString()).once("value").then(function(snapshot){
         let val = snapshot.val()
-        that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, total_match: null });
+        that.setState({ data: val ,canary: "hi", number: number,screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, total_match: null ,game: game, currentRound: current_round});
       })
     })
   }
@@ -82,11 +94,6 @@ class MatchInfo extends Component {
     this.setState({ currentRound: i })
   }
 
-  onMatchChange(i) {
-    console.log("doing something?")
-    this.setState({ currentRound: "Overall", currentMatch: i})
-  }
-
 
 
   render() {
@@ -96,7 +103,8 @@ class MatchInfo extends Component {
     console.log(this.state.data)
     let match = this.state.data['match']
     let team_names = this.state.data['teams']
-
+    let index = this.state['game']
+    console.log(index)
     // Setting up the overall match data structure.
     let total_match = {}
     total_match['map_name'] = "Match Score"
@@ -264,14 +272,15 @@ class MatchInfo extends Component {
       maps.push(entry)
     }
     let body = ""
-    let map_tabs = <Tab panes= {maps} />
+    console.log(index)
+    let map_tabs = <Tab panes= {maps} defaultActiveIndex={index}/>
 
     if(this.state.mobile == true){
       return(
 
         <div className="App">
           <div>
-          <Dropdown text = {this.state.currentRound} className={"Dropdown-padding"}>
+          <Dropdown text = {this.state.currentRound} className={"Dropdown-padding"} >
               <Dropdown.Menu>
                  {dropdown_content.map(function(round,i){
                     return round

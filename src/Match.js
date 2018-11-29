@@ -9,6 +9,8 @@ import PlayerProfile from './PlayerProfile'
 // depending on the full pathname
 const Match = () => (
   <Switch>
+
+    <Route path='/match/:stage/:number/:game' component={MatchInfo}/>
     <Route path='/match/:stage/:number' component={MatchInfo}/>
     <Route exact path='/' component={Navigator}/>
     <Route exact path='/navigator/:stage' component={Navigator}/>
