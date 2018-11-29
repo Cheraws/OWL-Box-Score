@@ -38,7 +38,7 @@ class MatchInfo extends Component {
     if (number == undefined){
       number = 0
     }
-    if (game == undefined){
+    if (game == undefined || game < 1){
       game = 0
     }
     else{
@@ -64,7 +64,7 @@ class MatchInfo extends Component {
     if (number == undefined){
       number = 0
     }
-    if (game == undefined){
+    if (game == undefined || game < 1){
       game = 0
     }
     else{

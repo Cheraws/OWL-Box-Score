@@ -5,12 +5,24 @@ import Highcharts from 'highcharts';
 import _ from 'lodash';
 import {Header, Table,Button, Rating,Grid,Menu,Container,Image,List,Icon,Dropdown,Tab} from 'semantic-ui-react'
 class PickRates extends Component {
+  constructor(props){
+    super(props)
+    this.state = {team:"All"}
+  }
+  onTeamChange(team) {
+    this.setState({team: team})       
+  }
 
-  AssignPlayers(team_data,team_names) {
+
+  AssignPlayers(team_data,team_names,filtered_teams) {
+
     let teams = {}
     let hero_times = {}
     let match_length = 0
     for (let team of team_names){
+      if(filtered_teams != "All" && filtered_teams != team){
+        continue
+      }
       let shown_keys = ["final_blows", "eliminations", "hero_damage", "deaths", "healing"]
       let player_team_data = []
       let player_entry = {}
@@ -48,7 +60,7 @@ class PickRates extends Component {
       let team_names = this.props.team_names
       let team_list = []
       let team_players = {}
-      let team_data = this.AssignPlayers(teams,team_names)
+      let team_data = this.AssignPlayers(teams,team_names,this.state.team)
       let hero_times = team_data[0]
       let match_length = team_data[1]
 
@@ -68,6 +80,22 @@ class PickRates extends Component {
         times.push(hero_time)
         categories.push(hero)
       }
+      let team_content = []
+
+      let  team_indicator = <Dropdown.Item 
+            onClick={()=> this.onTeamChange("All")}
+          >
+          {"All"} </Dropdown.Item>
+      team_content.push(team_indicator)
+
+      for(let team in teams){
+        team_indicator = <Dropdown.Item 
+            onClick={()=> this.onTeamChange(team)}
+          >
+          {team} </Dropdown.Item>
+        team_content.push(team_indicator)
+      }
+
       let other_series = [ {name: "Pick Rates", data: times}      ]
 
 
@@ -110,7 +138,13 @@ class PickRates extends Component {
 
       return (
         <div>
-
+            <Dropdown text = {this.state.team}  selection>
+              <Dropdown.Menu>
+                 {team_content.map(function(stat,i){
+                    return stat
+                 })}
+              </Dropdown.Menu>
+            </Dropdown>
           <Chart config={pick_options} />
         </div>
       );

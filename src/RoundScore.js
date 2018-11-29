@@ -95,11 +95,14 @@ class RoundScore extends Component{
         </Grid.Row>
         <Grid.Row />
         <Grid.Row>
+
+        <a href = {VOD}>VOD Link</a>
       <iframe src={VOD + ";autoplay=false"} width = {window.innerWidth} height = {0.5 * window.innerHeight} frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" autoplay='0' autostart=''></iframe>
       <video>
         <source src={VOD}/>
       </video>
         </Grid.Row>
+
       </Grid>
 
     );
