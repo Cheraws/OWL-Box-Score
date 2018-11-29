@@ -222,6 +222,7 @@ class PickRates extends Component {
 
       return (
         <div>
+            <div>
             Filter By: <Dropdown text = {this.state.filter}  selection>
               <Dropdown.Menu>
                  {filter_content.map(function(stat,i){
@@ -229,6 +230,8 @@ class PickRates extends Component {
                  })}
               </Dropdown.Menu>
             </Dropdown>
+            </div>
+            <div>
             Additional Filter: <Dropdown text = {additional}  selection>
               <Dropdown.Menu>
                  {additional_filter.map(function(stat,i){
@@ -236,6 +239,7 @@ class PickRates extends Component {
                  })}
               </Dropdown.Menu>
             </Dropdown>
+            </div>
           <Chart config={pick_options} />
         </div>
       );
