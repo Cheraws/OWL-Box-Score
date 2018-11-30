@@ -86,12 +86,13 @@ class MatchInfo extends Component {
     if(window.innerWidth < 500){
        mobile = true
     }
+    console.log("in here?")
     this.setState({ screenWidth: window.innerWidth, screenHeight: window.innerHeight - 120, mobile:mobile })
   }
 
-  onDropdown(i) {
-
-    this.setState({ currentRound: i })
+  onDropdown(round,index) {
+    console.log(index)
+    this.setState({ currentRound: round ,game: index})
   }
 
 
@@ -196,7 +197,7 @@ class MatchInfo extends Component {
 
 
     let match_button = <Dropdown.Item
-        onClick={()=> this.onDropdown("Overall")}>
+        onClick={()=> this.onDropdown("Overall",0)}>
         Overall
     </Dropdown.Item>
 
@@ -204,7 +205,6 @@ class MatchInfo extends Component {
 
     dropdown_values["Overall"] = content
     maps.push(entry)
-
 
     for (let i = 0; i < 5; i++){
       if(!(match[i])){
@@ -214,10 +214,11 @@ class MatchInfo extends Component {
                 <div> DNP or bugged </div>
               </div> 
             </Tab.Pane> }
+        maps.push(entry)
         continue
       }
       let match_button = <Dropdown.Item
-          onClick={()=> this.onDropdown("Round " + (i+1))}>
+          onClick={()=> this.onDropdown("Round " + (i+1), (i+1))}>
           Round {i+1}
 
       </Dropdown.Item>
@@ -249,8 +250,6 @@ class MatchInfo extends Component {
           </Tab.Pane> },
 
       ]
-      console.log(match[i])
-      console.log(vod)
       let content = <div>
             <RoundScore
             screenWidth={this.state.screenWidth}
